@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shakti AI</title>
+</head>
+<body>
+
+<h1>🤖 Shakti AI</h1>
+
+<input id="q" placeholder="Question likho">
+<button onclick="ask()">Ask</button>
+
+<p id="ans"></p>
+
+<script>
+function ask(){
+  let q = document.getElementById("q").value;
+
+  if(q.includes("hello")){
+    document.getElementById("ans").innerText = "Hello bhai 👋";
+  }
+  else if(q.includes("math")){
+    document.getElementById("ans").innerText = "2 + 2 = 4";
+  }
+  else{
+    document.getElementById("ans").innerText = "Samajh nahi aaya 😅";
+  }
+}
+</script>
+
+</body>
+</html>
