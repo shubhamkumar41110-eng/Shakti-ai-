@@ -1,15 +1,69 @@
-```html id="testcam"
+```html id="fixfinal"
 <!DOCTYPE html>
 <html>
-<body style="margin:0;background:black;color:white;text-align:center">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handy AI</title>
+<style>
+body{
+margin:0;
+background:#03020a;
+color:white;
+text-align:center;
+font-family:sans-serif;
+}
 
-<h2>Camera Test</h2>
-<button onclick="start()">Start Camera</button>
+#splash{
+position:fixed;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
 
-<video id="video" autoplay playsinline style="width:100%"></video>
+button{
+padding:15px 25px;
+border:none;
+border-radius:30px;
+background:#7cffc4;
+font-size:18px;
+}
+
+video{
+width:100%;
+position:fixed;
+top:0;
+left:0;
+}
+
+#copyright{
+position:fixed;
+bottom:10px;
+width:100%;
+font-size:12px;
+opacity:.6;
+}
+</style>
+</head>
+
+<body>
+
+<div id="splash">
+<h1>Handy AI</h1>
+<button onclick="start()">Enter Experience</button>
+</div>
+
+<video id="video" autoplay playsinline></video>
+
+<div id="copyright">
+Created by Mithun AI Lab https://www.instagram.com/mithun.ai.lab/
+</div>
 
 <script>
 function start(){
+document.getElementById("splash").style.display="none";
+
 navigator.mediaDevices.getUserMedia({video:true})
 .then(stream=>{
 document.getElementById("video").srcObject=stream;
@@ -19,10 +73,6 @@ alert("Camera error: "+err);
 });
 }
 </script>
-
-<div style="position:fixed;bottom:10px;width:100%">
-Created by Mithun AI Lab https://www.instagram.com/mithun.ai.lab/
-</div>
 
 </body>
 </html>
