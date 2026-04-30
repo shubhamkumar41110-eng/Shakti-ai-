@@ -43,9 +43,9 @@ document.getElementById("splash").style.display="none";
 navigator.mediaDevices.getUserMedia({video:true})
 .then(stream=>{
 video.srcObject=stream;
-
 video.onloadedmetadata=()=>initAI();
-});
+})
+.catch(e=>alert("Camera error: "+e));
 }
 
 function initAI(){
@@ -80,7 +80,6 @@ res.multiHandLandmarks.forEach(hand=>{
 hand.forEach(p=>{
 let x=p.x*canvas.width;
 let y=p.y*canvas.height;
-
 ctx.beginPath();
 ctx.arc(x,y,5,0,Math.PI*2);
 ctx.fillStyle="lime";
