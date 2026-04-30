@@ -1,54 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Shakti AI</title>
+  <title>Shakti AI 2.0</title>
   <style>
     body {
       font-family: Arial;
       text-align: center;
-      background: #111;
+      background: #0f172a;
       color: white;
     }
     input {
-      padding: 10px;
+      padding: 12px;
       width: 70%;
       margin: 10px;
+      border-radius: 8px;
+      border: none;
     }
     button {
       padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #22c55e;
+      color: black;
+      font-weight: bold;
     }
   </style>
 </head>
 
 <body>
 
-<h1>🤖 Shakti AI</h1>
+<h1>🤖 Shakti AI 2.0</h1>
 
-<input id="q" placeholder="Question likho">
+<input id="q" placeholder="Apna question likho...">
 <br>
-<button onclick="ask()">Ask</button>
+<button onclick="ask()">Ask AI</button>
 
 <p id="ans"></p>
 
 <script>
-function ask(){
-  let q = document.getElementById("q").value.toLowerCase();
+async function ask(){
+  let q = document.getElementById("q").value;
 
-  if(q.includes("hello")){
-    document.getElementById("ans").innerText = "Hello bhai 👋";
-  }
-  else if(q.includes("time")){
-    document.getElementById("ans").innerText = new Date().toLocaleTimeString();
-  }
-  else if(q.includes("date")){
-    document.getElementById("ans").innerText = new Date().toDateString();
-  }
-  else if(q.includes("math")){
-    document.getElementById("ans").innerText = "2 + 2 = 4";
-  }
-  else{
-    document.getElementById("ans").innerText = "AI upgrade aa raha hai 🔥";
-  }
+  document.getElementById("ans").innerText = "Thinking... 🤔";
+
+  let res = await fetch("https://api.affiliateplus.xyz/api/chatbot?message=" + q);
+
+  let data = await res.json();
+
+  document.getElementById("ans").innerText = data.message;
 }
 </script>
 
