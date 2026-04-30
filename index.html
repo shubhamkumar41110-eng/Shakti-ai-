@@ -1,182 +1,29 @@
-```html
+```html id="testcam"
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Handy AI</title>
+<html>
+<body style="margin:0;background:black;color:white;text-align:center">
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Mono&display=swap" rel="stylesheet">
+<h2>Camera Test</h2>
+<button onclick="start()">Start Camera</button>
 
-<!-- Stable MediaPipe -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"></script>
-
-<style>
-body{
-  margin:0;
-  background:#03020a;
-  color:white;
-  font-family:'DM Mono';
-  overflow:hidden;
-}
-
-video,canvas{
-  position:fixed;
-  width:100%;
-  height:100%;
-  top:0;left:0;
-}
-
-video{
-  transform:scaleX(-1);
-  filter:brightness(0.5);
-}
-
-#splash{
-  position:fixed;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:#03020a;
-}
-
-h1{
-  font-family:'Syne';
-  font-size:3rem;
-  background:linear-gradient(90deg,#7cffc4,#6bb5ff,#ff6bca);
-  -webkit-background-clip:text;
-  color:transparent;
-}
-
-button{
-  padding:12px 25px;
-  border:none;
-  border-radius:30px;
-  background:#7cffc4;
-  font-size:18px;
-  cursor:pointer;
-  margin-top:20px;
-}
-
-#copyright{
-  position:fixed;
-  bottom:10px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:12px;
-  opacity:.6;
-}
-</style>
-</head>
-
-<body>
-
-<div id="splash">
-  <h1>Handy AI</h1>
-  <p>Gesture Intelligence Platform</p>
-  <button onclick="start()">Enter Experience</button>
-</div>
-
-<video id="video" autoplay playsinline></video>
-<canvas id="canvas"></canvas>
-
-<div id="copyright">
-Created by Mithun AI Lab https://www.instagram.com/mithun.ai.lab/
-</div>
+<video id="video" autoplay playsinline style="width:100%"></video>
 
 <script>
-let video=document.getElementById("video");
-let canvas=document.getElementById("canvas");
-let ctx=canvas.getContext("2d");
-
-let W,H;
-
-function resize(){
-  W=canvas.width=window.innerWidth;
-  H=canvas.height=window.innerHeight;
-}
-resize();
-window.onresize=resize;
-
-/* START */
 function start(){
-  document.getElementById("splash").style.display="none";
-
-  video.setAttribute("playsinline", true);
-
-  navigator.mediaDevices.getUserMedia({
-    video:{width:1280,height:720}
-  }).then(stream=>{
-    video.srcObject=stream;
-
-    video.onloadedmetadata=()=>{
-      initHandTracking();
-    };
-  });
-}
-
-/* MEDIAPIPE */
-function initHandTracking(){
-  const hands=new Hands({
-    locateFile:(file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/${file}`
-  });
-
-  hands.setOptions({
-    maxNumHands:2,
-    modelComplexity:1,
-    minDetectionConfidence:0.7,
-    minTrackingConfidence:0.7
-  });
-
-  hands.onResults(draw);
-
-  const camera=new Camera(video,{
-    onFrame:async()=>{
-      await hands.send({image:video});
-    },
-    width:1280,
-    height:720
-  });
-
-  camera.start();
-}
-
-/* DRAW */
-function draw(results){
-  ctx.clearRect(0,0,W,H);
-
-  if(!results.multiHandLandmarks) return;
-
-  results.multiHandLandmarks.forEach((hand,i)=>{
-    let hue=(Date.now()/10+i*100)%360;
-
-    hand.forEach(p=>{
-      let x=p.x*W;
-      let y=p.y*H;
-
-      ctx.beginPath();
-      ctx.arc(x,y,6,0,Math.PI*2);
-      ctx.fillStyle=`hsl(${hue},100%,60%)`;
-      ctx.fill();
-    });
-
-    // pinch detect
-    let dx=hand[4].x-hand[8].x;
-    let dy=hand[4].y-hand[8].y;
-    let d=Math.hypot(dx,dy);
-
-    if(d<0.05){
-      ctx.fillStyle="yellow";
-      ctx.fillRect(W/2-20,H/2-20,40,40);
-    }
-  });
+navigator.mediaDevices.getUserMedia({video:true})
+.then(stream=>{
+document.getElementById("video").srcObject=stream;
+})
+.catch(err=>{
+alert("Camera error: "+err);
+});
 }
 </script>
+
+<div style="position:fixed;bottom:10px;width:100%">
+Created by Mithun AI Lab https://www.instagram.com/mithun.ai.lab/
+</div>
 
 </body>
 </html>
 ```
-
